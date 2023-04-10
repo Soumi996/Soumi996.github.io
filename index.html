@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+
+    class StopLoss {
+        // VALUE INITIALIZER
+        constructor(STOPLOSS, ATR, ATR_MULTIPIER, ENTRY) {
+            this.STOPLOSS = STOPLOSS;
+            this.ATR = ATR / 10;
+            this.ATR_MULTIPIER = ATR_MULTIPIER
+            this.ENTRY = ENTRY
+
+        }
+        //FUNCTION 1
+        pipCalculation() {
+            this.pip = (this.ATR * this.ATR_MULTIPIER).toFixed(1)
+            
+            let dec = parseInt(this.pip.toString().split('.')[1])
+
+            if(dec >= 5){
+                this.pip = Math.ceil((this.ATR * this.ATR_MULTIPIER).toFixed(1))
+            }else{
+                this.pip = Math.floor((this.ATR * this.ATR_MULTIPIER).toFixed(1))
+            }
+
+            return this.pip
+        }
+        //FUNCTION 2
+        lotSize() {
+            this.lot = ((this.STOPLOSS / this.pip) / 10).toFixed(2);
+            return this.lot
+        }
+
+        entry(){
+
+        }
+
+        //FUNCTION 4
+        result() {
+            return `${this.pipCalculation()} PIP, ${this.lotSize()} LOT`
+        }
+    }
+
+    function call(){
+        let ATR = parseInt(document.getElementById('ATR').value)
+        let ATR_MULTIPIER = parseFloat(document.getElementById('ATR_MULTIPIER').value)
+        let STOPLOSS = parseInt(document.getElementById('STOPLOSS').value)
+        let ENTRY = parseInt(document.getElementById('ENTRY').value)
+
+        let SL = new StopLoss(STOPLOSS, ATR, ATR_MULTIPIER, ENTRY);
+
+        let div = document.getElementById('result');
+
+        div.innerHTML = "";
+
+        div.innerHTML += `${SL.result() }`;
+
+        document.getElementById('ATR').value = ""
+
+
+
+        
+        
+    }
+
+</script>
+
+<style>
+    * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        font-size: xx-large;
+    }
+
+    .container{
+        max-width: 500px;
+        margin: auto;
+        margin-top: 100px;
+    }
+
+    input{
+        width: 100%;
+        height: 100%;
+        margin-top: 20px;
+        
+    }
+
+    #result{
+        text-align: center;
+        font-size: 65px;
+    }
+</style>
+
+<body>
+
+<div class="container">
+<input type="text" value="" id="ATR" placeholder="ATR"> <br>
+<input type="hidden" value="1.0" id="ENTRY" placeholder="ENTRY"> <br>
+<input type="text" value="2" id="ATR_MULTIPIER" placeholder="ATR_MULTIPIER"> <br>
+<input type="text" value="20" id="STOPLOSS" placeholder="STOP_LOSS"> <br>
+
+<input type="button" onclick="call()" value="Display"> <br>
+
+<br>
+<br>
+<br>
+
+<div id="result"></div>
+
+</div>
+
+
+    
+</body>
+</html>
